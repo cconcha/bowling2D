@@ -4,7 +4,7 @@ import { Wrapper, Button, Title } from '../../components'
 
 const HomePage = ({ history }) => {
   return (
-    <Wrapper width="400px">
+    <Wrapper width="400px" mt="100px">
       <Title title="Bowling 2D" uppercase center />
       <Button fluid success mt="60px" onClick={() => history.push(`/login`)}>
         New game
