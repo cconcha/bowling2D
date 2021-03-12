@@ -2,6 +2,12 @@
 
 Bowling game web app application
 
+Clone the project and:
+
+Run `yarn` or `npm install` to install dependencies and `yarn start` or `npm start` to run the project in your localhost. 
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
