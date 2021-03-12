@@ -1,11 +1,12 @@
 # bowling2D
 
-Bowling game web app application
+Bowling game web application.
 
-Clone the project and:
+Clone the project on your machine and:
 
-Run `yarn` or `npm install` to install dependencies and `yarn start` or `npm start` to run the project in your localhost. 
+Run `yarn` or `npm install` to install dependencies 
 
+Run `yarn start` or `npm start` to run the project in your localhost. 
 
 
 # Getting Started with Create React App
