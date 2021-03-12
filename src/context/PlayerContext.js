@@ -2,6 +2,9 @@ import { createContext } from 'react'
 
 const PlayerContext = createContext({
   players: {},
-  setPlayers: () => {}
+  setPlayers: () => {},
+  scorePlayers: [[], []],
+  setScorePlayers: () => {}
 })
+
 export default PlayerContext

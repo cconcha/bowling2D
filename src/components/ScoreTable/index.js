@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import { Title } from '../../components'
 import styled, { css } from 'styled-components'
 
@@ -71,8 +71,19 @@ const PlayerTag = styled.div`
   margin-top: 18px;
 `
 
-const ScoreTable = ({ cumulativeScores = [], playerName, playerColor, active, ...props }) => {
-  const renderScores = () => {}
+const ScoreTable = ({ cumulativeScores = [], playerName, playerColor, active, scorePlayer }) => {
+  const renderScores = (frame, roll, last = false) => {
+    let scoreOne = scorePlayer[2 * frame]
+    let scoreTwo = scorePlayer[2 * frame + 1]
+    let scoreThree = scorePlayer[2 * frame + 2]
+    if (roll === 0 && !last && scoreOne === 10) return '-'
+    if (roll === 1 && !last && scoreOne === 10) return 'X'
+    if (scoreOne + scoreTwo === 10 && roll === 1) return '/'
+    if (roll === 0) return scoreOne === 0 ? '-' : scoreOne === 10 ? 'X' : scoreOne
+    if (roll === 1) return scoreTwo === 0 ? '-' : scoreTwo === 10 ? 'X' : scoreTwo
+    if (roll === 2) return scoreThree === 0 ? '-' : scoreThree === 10 ? 'X' : scoreThree
+  }
+
   return (
     <>
       <ContainerStyled active={active ? 'true' : null}>
@@ -113,9 +124,9 @@ const ScoreTable = ({ cumulativeScores = [], playerName, playerColor, active, ..
               <TdStyled colSpan="3">{renderScores(7, 1)}</TdStyled>
               <TdStyled colSpan="3">{renderScores(8, 0)}</TdStyled>
               <TdStyled colSpan="3">{renderScores(8, 1)}</TdStyled>
-              <TdStyled colSpan="3">{renderScores(9, 0)}</TdStyled>
-              <TdStyled colSpan="3">{renderScores(9, 1)}</TdStyled>
-              <TdStyled colSpan="3">{renderScores(9, 2)}</TdStyled>
+              <TdStyled colSpan="3">{renderScores(9, 0, true)}</TdStyled>
+              <TdStyled colSpan="3">{renderScores(9, 1, true)}</TdStyled>
+              <TdStyled colSpan="3">{renderScores(9, 2, true)}</TdStyled>
             </TrStyled>
             <TrStyled>
               <TdStyled colSpan="6">{cumulativeScores[0]}</TdStyled>

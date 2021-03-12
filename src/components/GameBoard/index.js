@@ -1,6 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import styled, { css } from 'styled-components'
+// import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import { Pine, Box } from '../../components'
 import { useSpring, animated } from 'react-spring'
 import strikeGif from './strike.gif'
