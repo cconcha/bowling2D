@@ -6,7 +6,7 @@ import { Wrapper, Input, Button, Title, Box } from '../../components'
 import PlayerContext from '../../context/PlayerContext'
 
 const LoginPage = ({ history }) => {
-  const { players, setPlayers } = useContext(PlayerContext)
+  const { setPlayers } = useContext(PlayerContext)
 
   return (
     <Wrapper width="400px" mt="100px">
