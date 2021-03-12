@@ -93,8 +93,6 @@ const GamePage = ({ history }) => {
     } else if (playerState[activePlayer] === 3) {
       array[activePlayer].push(score)
     }
-    console.log(playerState[activePlayer])
-    console.log(array[activePlayer])
     setScorePlayers(array)
   }
 
@@ -107,10 +105,7 @@ const GamePage = ({ history }) => {
     // To accept more players in the future
     if (scorePlayers[playerShotTwoIndex] && scorePlayers[playerShotTwoIndex].length > 18) {
       newPlayersState[playerShotTwoIndex] = 3
-      console.log()
-      // if (scorePlayers[playerShotTwoIndex][scorePlayers[playerShotTwoIndex].length - 1] === 10) {
       setPinesArray(pines)
-      // }
     } else if (playerState[playerState.indexOf(3)]) {
       if (playerState[playerState.indexOf(3) + 1] !== undefined) newPlayersState[playerState.indexOf(3) + 1] = 1
       else newPlayersState[0] = 1

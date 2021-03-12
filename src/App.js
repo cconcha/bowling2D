@@ -6,10 +6,7 @@ import PlayerContext from './context/PlayerContext'
 
 const App = () => {
   const [players, setPlayers] = useState({})
-  const [scorePlayers, setScorePlayers] = useState([
-    [0, 4, 2, 3, 4, 5, 2, 7, 4, 5, 2, 7, 4, 5, 4, 5, 4, 5],
-    [0, 4, 2, 3, 4, 5, 2, 7, 4, 5, 2, 7, 4, 5, 4, 5, 10, 0]
-  ])
+  const [scorePlayers, setScorePlayers] = useState([[], []])
   const value = { players, setPlayers, scorePlayers, setScorePlayers }
 
   return (
