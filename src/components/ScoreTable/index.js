@@ -73,6 +73,7 @@ const PlayerTag = styled.div`
 
 const ScoreTable = ({ cumulativeScores = [], playerName, playerColor, active, scorePlayer }) => {
   const renderScores = (frame, roll, last = false) => {
+    // console.log(scorePlayer)
     let scoreOne = scorePlayer[2 * frame]
     let scoreTwo = scorePlayer[2 * frame + 1]
     let scoreThree = scorePlayer[2 * frame + 2]

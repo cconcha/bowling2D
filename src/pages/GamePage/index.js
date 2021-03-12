@@ -81,19 +81,24 @@ const GamePage = ({ history }) => {
   const setNewScores = (score) => {
     let array = [...scorePlayers]
 
-    if (playerState[activePlayer] === 3 || array[activePlayer].length >= 18) {
-      array[activePlayer].push(score)
-    } else if (playerState[activePlayer] === 1) {
+    if (playerState[activePlayer] === 1) {
       array[activePlayer].push(score)
       if (score === 10 && array[activePlayer].length < 18) array[activePlayer].push(0)
     } else if (playerState[activePlayer] === 2) {
-      array[activePlayer].push(score - array[activePlayer][array[activePlayer].length - 1])
+      if (array[activePlayer].length >= 18 && array[activePlayer][array[activePlayer].length - 1] === 10) {
+        array[activePlayer].push(score)
+      } else {
+        array[activePlayer].push(score - array[activePlayer][array[activePlayer].length - 1])
+      }
+    } else if (playerState[activePlayer] === 3) {
+      array[activePlayer].push(score)
     }
+    console.log(playerState[activePlayer])
+    console.log(array[activePlayer])
     setScorePlayers(array)
   }
 
   const setNewPlayerStates = (pinesUp) => {
-    console.log('playerState', playerState)
     let newPlayersState = new Array(playerState.length).fill(0)
     let playerShotOne = playerState[playerState.indexOf(1)]
     let playerShotOneIndex = playerState.indexOf(1)
@@ -102,7 +107,10 @@ const GamePage = ({ history }) => {
     // To accept more players in the future
     if (scorePlayers[playerShotTwoIndex] && scorePlayers[playerShotTwoIndex].length > 18) {
       newPlayersState[playerShotTwoIndex] = 3
+      console.log()
+      // if (scorePlayers[playerShotTwoIndex][scorePlayers[playerShotTwoIndex].length - 1] === 10) {
       setPinesArray(pines)
+      // }
     } else if (playerState[playerState.indexOf(3)]) {
       if (playerState[playerState.indexOf(3) + 1] !== undefined) newPlayersState[playerState.indexOf(3) + 1] = 1
       else newPlayersState[0] = 1
