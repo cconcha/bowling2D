@@ -14,6 +14,7 @@ const GridStyled = styled.div`
 const GamePage = ({ history }) => {
   const { scorePlayers, setScorePlayers } = useContext(PlayerContext)
   const [playerState, setPlayerState] = useState([1, 0])
+  const [lastTerms, setLastTerms] = useState([0, 0])
   const [activeColor, setActiveColor] = useState()
   const [activePlayer, setActivePlayer] = useState()
   const [play, setPlay] = useState(false)
@@ -32,11 +33,7 @@ const GamePage = ({ history }) => {
   }, [])
 
   useEffect(() => {
-    setActiveColor(
-      playerColors[playerState.indexOf(1)] ||
-        playerColors[playerState.indexOf(2)] ||
-        playerColors[playerState.indexOf(3)]
-    )
+    setActiveColor(playerColors[playerState.indexOf(1)] || playerColors[playerState.indexOf(2)])
     setActivePlayer(
       playerState.indexOf(1) > -1
         ? playerState.indexOf(1)
@@ -68,11 +65,21 @@ const GamePage = ({ history }) => {
     }, 1000)
   }
 
+  const isLastTerm = () => {
+    let lastTermCopy = [...lastTerms]
+    console.log(' scorePlayers[activePlayer]', scorePlayers)
+    console.log('activep', activePlayer)
+    lastTermCopy[activePlayer] = scorePlayers[activePlayer].length >= 18 ? 1 : 0
+    setLastTerms(lastTermCopy)
+    return lastTermCopy
+  }
+
   const setNewPinesArray = () => {
     let newPinesArray = pinesArray.map((el) => el.map((pin) => pin * Math.round(Math.ceil(Math.random() * 5) / 10)))
     let pinesUp = newPinesArray.map((el) => el.filter((pin) => pin === 1).length).reduce((cur, acc) => cur + acc)
     setPinesArray(newPinesArray)
     if (pinesUp === 0 && playerState[playerState.indexOf(1)]) setStrike(true)
+    // if(pinesUp === 0 && isLastTerm() && ) set fro strikes on last term
     setNewScores(10 - pinesUp)
 
     return pinesUp
@@ -80,55 +87,57 @@ const GamePage = ({ history }) => {
 
   const setNewScores = (score) => {
     let array = [...scorePlayers]
-
-    if (playerState[activePlayer] === 1) {
-      array[activePlayer].push(score)
-      if (score === 10 && array[activePlayer].length < 18) array[activePlayer].push(0)
-    } else if (playerState[activePlayer] === 2) {
-      if (array[activePlayer].length >= 18 && array[activePlayer][array[activePlayer].length - 1] === 10) {
+    let lastTerm = isLastTerm()
+    console.log(lastTerm)
+    if (!lastTerm[activePlayer]) {
+      if (playerState[activePlayer] === 1) {
         array[activePlayer].push(score)
-      } else {
+        if (score === 10) array[activePlayer].push(0)
+      } else if (playerState[activePlayer] === 2) {
         array[activePlayer].push(score - array[activePlayer][array[activePlayer].length - 1])
       }
-    } else if (playerState[activePlayer] === 3) {
-      array[activePlayer].push(score)
+    } else {
+      if (playerState[activePlayer] === 1 || array[activePlayer][array[activePlayer].length - 2] === 10) {
+        array[activePlayer].push(score)
+      } else if (playerState[activePlayer] === 2) {
+        array[activePlayer].push(score - array[activePlayer][array[activePlayer].length - 1])
+      }
     }
-    console.log(playerState[activePlayer])
-    console.log(array[activePlayer])
+
     setScorePlayers(array)
   }
 
   const setNewPlayerStates = (pinesUp) => {
     let newPlayersState = new Array(playerState.length).fill(0)
     let playerShotOne = playerState[playerState.indexOf(1)]
+    let playerShotTwo = playerState[playerState.indexOf(2)]
+    let playerShotThree = playerState[playerState.indexOf(3)]
     let playerShotOneIndex = playerState.indexOf(1)
     let playerShotTwoIndex = playerState.indexOf(2)
+    let playerShotThreeIndex = playerState.indexOf(3)
 
+    let lastTerm = isLastTerm()
     // To accept more players in the future
-    if (scorePlayers[playerShotTwoIndex] && scorePlayers[playerShotTwoIndex].length > 18) {
-      newPlayersState[playerShotTwoIndex] = 3
-      console.log()
-      // if (scorePlayers[playerShotTwoIndex][scorePlayers[playerShotTwoIndex].length - 1] === 10) {
-      setPinesArray(pines)
-      // }
-    } else if (playerState[playerState.indexOf(3)]) {
-      if (playerState[playerState.indexOf(3) + 1] !== undefined) newPlayersState[playerState.indexOf(3) + 1] = 1
-      else newPlayersState[0] = 1
-      setPinesArray(pines)
-    } else if (playerShotOne && pinesUp === 0 && scorePlayers[playerShotOneIndex].length > 18) {
+    console.log('activePlayer 1', activePlayer)
+    if (playerShotOne && pinesUp > 0) {
       newPlayersState[playerShotOneIndex] = 2
-      setPinesArray(pines)
-    } else if (playerShotOne && pinesUp > 0) {
-      newPlayersState[playerShotOneIndex] = 2
-    } else if (playerState[playerShotTwoIndex]) {
+    } else if (playerState[playerShotTwoIndex] && !lastTerm[activePlayer]) {
       if (playerState[playerShotTwoIndex + 1] !== undefined) newPlayersState[playerShotTwoIndex + 1] = 1
       else newPlayersState[0] = 1
       setPinesArray(pines)
-    } else if (playerShotOne && pinesUp === 0) {
+    } else if (playerShotOne && pinesUp === 0 && !lastTerm[activePlayer]) {
       if (playerState[playerShotOneIndex + 1] !== undefined) newPlayersState[playerShotOneIndex + 1] = 1
       else newPlayersState[0] = 1
       setPinesArray(pines)
     }
+    console.log('activePlayer', activePlayer)
+    if (lastTerm[activePlayer] && playerShotTwo) {
+      newPlayersState[activePlayer] = 3
+    } else if (lastTerm[activePlayer] && playerShotThree) {
+      if (playerState[playerShotThreeIndex + 1] !== undefined) newPlayersState[playerShotThreeIndex + 1] = 1
+      else newPlayersState[0] = 1
+    }
+    console.log('newPlayersState', newPlayersState)
 
     setPlayerState(newPlayersState)
     setStrike(false)
